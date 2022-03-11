@@ -8,33 +8,31 @@ if (int.TryParse(Console.ReadLine(), out int numeroMatriz))
     int[,] matriz = new int[numeroMatriz, numeroMatriz];
     Random rd = new Random();
 
-    for (int i = 0; i < matriz.GetLength(0); i++)
+    Parallel.For(0, matriz.GetLength(0), i =>
     {
         numeroMatriz = numeroMatriz - 1;
-        for (int j = 0; j < matriz.GetLength(1); j++)
+        Parallel.For(0, matriz.GetLength(1), j =>
         {
             matriz[i, j] = rd.Next(1, 100);
-            if(valorMaximo <= matriz[i, j]) valorMaximo = matriz[i, j];
+            if (valorMaximo <= matriz[i, j]) valorMaximo = matriz[i, j];
             if (valorMinimo >= matriz[i, j]) valorMinimo = matriz[i, j];
-            Console.Write($"{matriz[i, j]}  ");
             if (i == j) sum1 = sum1 + matriz[i, j];
             if (j == numeroMatriz) sum = sum + matriz[i, j];
-        }
-        Console.Write("\n");
-    }
+        });
+    });
 
     Console.WriteLine($"\nSuma diagonal 1: {sum}");
     Console.WriteLine($"Suma diagonal 2: {sum1}\n");
     Console.WriteLine($"Valor máximo: {valorMaximo}");
     Console.WriteLine($"Valor mínimo: {valorMinimo}\n");
     Console.Write("Desea volver a empezar => si/no: ");
-    string respuesta  = Console.ReadLine();
+    string respuesta = Console.ReadLine();
     if (respuesta == "si")
     {
         Console.Clear();
         goto init;
     }
-        
+
 }
 else
 {
